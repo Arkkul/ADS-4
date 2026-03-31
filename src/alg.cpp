@@ -70,8 +70,7 @@ int countPairs3(int* arr, int len, int value) {
                 int n = right - left + 1;
                 count += n * (n - 1) / 2;
                 break;
-            }
-            else {
+            } else {
                 int left_val = arr[left];
                 int left_count = 0;
                 while (left < right && arr[left] == left_val) {
@@ -88,11 +87,9 @@ int countPairs3(int* arr, int len, int value) {
 
                 count += left_count * right_count;
             }
-        }
-        else if (sum < value) {
+        } else if (sum < value) {
             ++left;
-        }
-        else {
+        } else {
             --right;
         }
     }
