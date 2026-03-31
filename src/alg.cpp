@@ -52,51 +52,45 @@ int countPairs2(int* arr, int len, int value) {
     return count;
 }
 
-int binary_search(int* arr, int left, int right, int target) {
-    while (left <= right) {
-        int mid = left + (right - left) / 2;
-        if (arr[mid] == target) {
-            return mid;
-        } else if (arr[mid] < target) {
-            left = mid + 1;
-        } else {
-            right = mid - 1;
-        }
-    }
-    return -1;
-}
-
 int countPairs3(int* arr, int len, int value) {
     int count = 0;
 
     for (int i = 0; i < len; ++i) {
         int target = value - arr[i];
-        int pos = binary_search(arr, i + 1, len - 1, target);
+        int left = i + 1;
+        int right = len - 1;
+        int first_pos = -1;
 
-        if (pos != -1) {
-            int target_val = arr[pos];
-            int left = pos;
-            while (left > i && arr[left - 1] == target_val) {
-                --left;
-            }
-
-            int right = pos;
-            while (right < len - 1 && arr[right + 1] == target_val) {
-                ++right;
-            }
-
-            if (arr[i] == target_val) {
-                int valid_start = (left > i) ? left : i + 1;
-                if (valid_start <= right) {
-                    count += (right - valid_start + 1);
-                }
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (arr[mid] == target) {
+                first_pos = mid;
+                right = mid - 1;
+            } else if (arr[mid] < target) {
+                left = mid + 1;
             } else {
-                count += (right - left + 1);
+                right = mid - 1;
+            }
+        }
+
+        if (first_pos != -1) {
+            left = first_pos;
+            right = len - 1;
+            int last_pos = first_pos;
+
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                if (arr[mid] == target) {
+                    last_pos = mid;
+                    left = mid + 1;
+                } else if (arr[mid] < target) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
             }
 
-            while (i + 1 < len && arr[i + 1] == arr[i]) {
-                ++i;
-            }
+            count += (last_pos - first_pos + 1);
         }
     }
 
